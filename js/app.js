@@ -172,14 +172,20 @@ function process_csv(csv_data){
         }else{
           temp["count"]='0';
         }
-        Promise.all([d3.csv("https://raw.githubusercontent.com/crystaltys/CSC3007-assignment3/main/data.csv")]).then(data => {
-          data[0].find((o, i) => {
-            if (String(o.Subzone).toUpperCase() == String(chunk.split(",")[0]).toUpperCase()) {
-              temp["males"] = Object(data[0][i+1]).Count
-              temp["females"]= Object(data[0][i+2]).Count
-            }
-          })
+        $.ajax({ 
+          type: 'GET', 
+          url: 'https://raw.githubusercontent.com/crystaltys/CSC3007-assignment3/main/data.csv', 
+          success: function (data) { 
+            data[0].find((o, i) => {
+              if (String(o.Subzone).toUpperCase() == String(chunk.split(",")[0]).toUpperCase()) {
+                temp["males"] = Object(data[0][i+1]).Count
+                temp["females"]= Object(data[0][i+2]).Count
+              }
+            })
+          }
         })
+        //Promise.all([d3.csv("https://raw.githubusercontent.com/crystaltys/CSC3007-assignment3/main/data.csv")]).then(data => {
+        //})
         dataset.push(temp)
       }
     })
