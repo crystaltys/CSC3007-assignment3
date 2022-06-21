@@ -21,7 +21,7 @@ $.ajax({
   type: 'GET', 
   url: 'https://raw.githubusercontent.com/crystaltys/CSC3007-assignment3/main/data.csv', 
   success: function (data) { 
-      csv = process_csv(csv_data,pop_data) 
+      csv = process_csv(csv_data,data) 
       draw_choropleth(json_data,csv);
   }
 })
@@ -179,7 +179,6 @@ function process_csv(csv_data,pop_data){
         }else{
           temp["count"]='0';
         }
-
         pop_data[0].find((o, i) => {
           if (String(o.Subzone).toUpperCase() == String(chunk.split(",")[0]).toUpperCase()) {
             temp["males"] = Object(data[0][i+1]).Count
