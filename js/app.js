@@ -284,7 +284,4 @@ function draw_choropleth(pos_data,csv_data){
         width: 300, 
         height:  44 
     });
-
-
-        
 }
