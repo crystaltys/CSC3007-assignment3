@@ -1,5 +1,5 @@
 let width = 1000, height = 600;
-var json_data;
+var json_data, csv_data;
 
 $.ajax({ 
     type: 'GET', 
@@ -14,7 +14,14 @@ $.ajax({
   url: 'https://chi-loong.github.io/CSC3007/assignments/population2021.csv', 
   success: function (data) { 
       csv_data = data;
-      csv = process_csv(csv_data) 
+  }
+})
+
+$.ajax({ 
+  type: 'GET', 
+  url: 'https://raw.githubusercontent.com/crystaltys/CSC3007-assignment3/main/data.csv', 
+  success: function (data) { 
+      csv = process_csv(csv_data,pop_data) 
       draw_choropleth(json_data,csv);
   }
 })
@@ -158,7 +165,7 @@ function legend({
     return svg.node();
 }
 
-function process_csv(csv_data){
+function process_csv(csv_data,pop_data){
     dataset = []
     let array =  csv_data.toString().replace("/\n/g", ",").replace("-", '0');
     var chunks = array.split("\n")
@@ -172,20 +179,14 @@ function process_csv(csv_data){
         }else{
           temp["count"]='0';
         }
-        $.ajax({ 
-          type: 'GET', 
-          url: 'https://raw.githubusercontent.com/crystaltys/CSC3007-assignment3/main/data.csv', 
-          success: function (data) { 
-            data[0].find((o, i) => {
-              if (String(o.Subzone).toUpperCase() == String(chunk.split(",")[0]).toUpperCase()) {
-                temp["males"] = Object(data[0][i+1]).Count
-                temp["females"]= Object(data[0][i+2]).Count
-              }
-            })
+
+        pop_data[0].find((o, i) => {
+          if (String(o.Subzone).toUpperCase() == String(chunk.split(",")[0]).toUpperCase()) {
+            temp["males"] = Object(data[0][i+1]).Count
+            temp["females"]= Object(data[0][i+2]).Count
           }
         })
-        //Promise.all([d3.csv("https://raw.githubusercontent.com/crystaltys/CSC3007-assignment3/main/data.csv")]).then(data => {
-        //})
+
         dataset.push(temp)
       }
     })
