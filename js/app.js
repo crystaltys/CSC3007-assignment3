@@ -179,7 +179,10 @@ function process_csv(csv_data,pop_data){
         }else{
           temp["count"]='0';
         }
-        pop_data[0].find((o, i) => {
+        pop_data =  pop_data.toString().replace("/\n/g", ",");
+        pop_data = pop_data.split("\n")
+        console.log(pop_data)
+        pop_data.find((o, i) => {
           if (String(o.Subzone).toUpperCase() == String(chunk.split(",")[0]).toUpperCase()) {
             temp["males"] = Object(data[0][i+1]).Count
             temp["females"]= Object(data[0][i+2]).Count
